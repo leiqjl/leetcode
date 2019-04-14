@@ -14,13 +14,13 @@ package com.leiqjl;
 public class ZigZagConversion {
 
     public String convert(String s, int numRows) {
-        if (numRows < 1) {
+        if (numRows <= 1) {
             return s;
         }
         StringBuilder builder = new StringBuilder();
         int n = s.length();
         int len = numRows * 2 - 2;
-        for (int i = 0; i <= numRows; i++) {
+        for (int i = 0; i < numRows; i++) {
             for (int j = 0; j + i < n; j += len) {
                 builder.append(s.charAt(j + i));
                 if (i != 0 && i != numRows - 1 && j + len - i < n)
