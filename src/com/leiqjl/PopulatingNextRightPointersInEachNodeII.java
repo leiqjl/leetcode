@@ -1,8 +1,5 @@
 package com.leiqjl;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 /**
  * 117. Populating Next Right Pointers in Each Node II
  * <p>
@@ -17,32 +14,31 @@ import java.util.Deque;
 public class PopulatingNextRightPointersInEachNodeII {
 
 
-    //todo  constant extra space
+
+
     public Node connect(Node root) {
         if (root == null) {
             return null;
         }
-        Deque<Node> queue = new ArrayDeque<>();
-        queue.add(root);
-        int size;
-        Node cur, pre = null;
-        while (!queue.isEmpty()) {
-            size = queue.size();
-            while (size > 0) {
-                cur = queue.remove();
-                if (pre != null) {
-                    pre.next = cur;
-                }
-                pre = cur;
-                if (cur.left != null) {
-                    queue.add(cur.left);
-                }
-                if (cur.right != null) {
-                    queue.add(cur.right);
-                }
-                size--;
+        Node dummyHead = new Node(-1);
+        Node p = dummyHead, cur = root;
+        while (cur != null) {
+            if (cur.left != null) {
+                p.next = cur.left;
+                p = p.next;
             }
-            pre = null;
+            if (cur.right != null) {
+                p.next = cur.right;
+                p = p.next;
+            }
+            if (cur.next != null) {
+                cur = cur.next;
+            } else {
+                //next level
+                cur = dummyHead.next;
+                dummyHead.next = null;
+                p = dummyHead;
+            }
         }
         return root;
     }
