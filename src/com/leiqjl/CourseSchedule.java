@@ -13,6 +13,7 @@ import java.util.Queue;
  */
 public class CourseSchedule {
 
+    //BFS
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         LinkedList<Integer>[] graph = new LinkedList[numCourses];
         int[] degree = new int[numCourses];
@@ -43,4 +44,37 @@ public class CourseSchedule {
         return count == numCourses;
     }
 
+    int[] visit;
+    boolean canFinish;
+    //DFS
+    public boolean canFinishDFS(int numCourses, int[][] prerequisites) {
+        LinkedList<Integer>[] graph = new LinkedList[numCourses];
+        for (int i = 0; i < numCourses; i++) {
+            graph[i] = new LinkedList<>();
+        }
+        for (int[] e : prerequisites) {
+            graph[e[1]].add(e[0]);
+        }
+        visit = new int[numCourses];
+        canFinish= true;
+        for (int i = 0; i < numCourses; i++) {
+            traversal(graph, i);
+        }
+        return canFinish;
+    }
+
+    private void traversal(LinkedList<Integer>[] graph, int s) {
+        if (visit[s] == 2) {
+            canFinish = false;
+            return;
+        }
+        if (visit[s] == 1) {
+            return;
+        }
+        visit[s] = 2;
+        for (int i : graph[s]) {
+            traversal(graph, i);
+        }
+        visit[s] = 1;
+    }
 }
