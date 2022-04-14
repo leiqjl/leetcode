@@ -18,31 +18,30 @@ public class MinimumWindowSubstring {
         int left = 0, right = 0, count = 0;
         int min = Integer.MAX_VALUE, sub = 0;
         HashMap<Character, Integer> map = new HashMap<>();
-        HashMap<Character, Integer> tmap = new HashMap<>();
         for (char c : t.toCharArray()) {
-            tmap.put(c, tmap.getOrDefault(c, 0) + 1);
+            map.put(c, map.getOrDefault(c, 0) + 1);
         }
         while (right < s.length()) {
             char cr = s.charAt(right);
-            if (tmap.containsKey(cr)) {
-                int crCount = map.getOrDefault(cr, 0) + 1;
+            if (map.containsKey(cr)) {
+                int crCount = map.get(cr) - 1;
                 map.put(cr, crCount);
-                if (crCount == tmap.get(cr)) {
+                if (crCount >= 0) {
                     count++;
                 }
             }
-            while (count == tmap.size()) {
+            while (count == t.length()) {
                 if ((right - left + 1) < min) {
                     min = right - left + 1;
                     sub = left;
                 }
                 char cl = s.charAt(left);
-                if (tmap.containsKey(cl)) {
-                    int clCount = map.get(cl);
-                    if (clCount == tmap.get(cl)) {
+                if (map.containsKey(cl)) {
+                    int clCount = map.get(cl) + 1;
+                    map.put(cl, clCount);
+                    if (clCount > 0) {
                         count--;
                     }
-                    map.put(cl, clCount - 1);
                 }
                 left++;
             }
