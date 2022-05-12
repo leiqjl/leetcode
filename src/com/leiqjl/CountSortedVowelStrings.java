@@ -25,6 +25,10 @@ public class CountSortedVowelStrings {
         }
         return a + e + i + o + u;
     }
+    //(n+4)! / n! * 4! = (n+1)(n+2)(n+3)(n+4)/4!
+    public int countVowelStrings1(int n) {
+        return (n+1)*(n+2)*(n+3)*(n+4)/24;
+    }
 
 
     public static void main(String[] args) {
