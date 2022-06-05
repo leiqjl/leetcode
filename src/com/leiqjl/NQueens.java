@@ -7,29 +7,39 @@ import java.util.List;
  * 51. N-Queens - Hard
  */
 public class NQueens {
+    boolean[] flagCol;
+    boolean[] flag45;
+    boolean[] flag135;
+
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> result = new ArrayList<>();
         char[][] chessboard = new char[n][n];
+        flagCol = new boolean[n];
+        flag45 = new boolean[2 * n - 1];
+        flag135 = new boolean[2 * n - 1];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 chessboard[i][j] = '.';
             }
         }
-        dfs(chessboard, 0, result);
+        dfs(chessboard, 0, result, n);
         return result;
     }
 
-    private void dfs(char[][] chessboard, int curRow, List<List<String>> result) {
-        if (curRow == chessboard.length) {
+    private void dfs(char[][] chessboard, int curRow, List<List<String>> result, int n) {
+        if (curRow == n) {
             addResult(chessboard, result);
             return;
         }
         for (int i = 0; i < chessboard.length; i++) {
-            if (check(chessboard, i, curRow)) {
-                chessboard[i][curRow] = 'Q';
-                dfs(chessboard, curRow + 1, result);
-                chessboard[i][curRow] = '.';
+            if (flagCol[i] || flag45[i + curRow] || flag135[i - curRow + n - 1]) {
+                continue;
             }
+            flagCol[i] = flag45[i + curRow] = flag135[i - curRow + n - 1] = true;
+            chessboard[i][curRow] = 'Q';
+            dfs(chessboard, curRow + 1, result, n);
+            chessboard[i][curRow] = '.';
+            flagCol[i] = flag45[i + curRow] = flag135[i - curRow + n - 1] = false;
         }
     }
 
