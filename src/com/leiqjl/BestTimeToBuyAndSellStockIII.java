@@ -1,5 +1,7 @@
 package com.leiqjl;
 
+import java.util.Arrays;
+
 /**
  * 123. Best Time to Buy and Sell Stock III - Hard
  * <p>
@@ -41,7 +43,7 @@ public class BestTimeToBuyAndSellStockIII {
         return dp[2][n - 1];
     }
 
-    //time O(kn/) space O(kn)
+    //time O(kn) space O(kn)
     public int maxProfit2(int[] prices) {
         int n = prices.length;
         int[][] dp = new int[3][n];
@@ -53,6 +55,36 @@ public class BestTimeToBuyAndSellStockIII {
             }
         }
         return dp[2][n - 1];
+    }
+
+    //time O(kn) space O(kn)
+    public int maxProfit3(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[3][n];
+        int[] min = new int[3];
+        Arrays.fill(min, prices[0]);
+        for (int i = 1; i < n; i++) {
+            for (int k = 1; k <= 2; k++) {
+                min[k] = Math.min(min[k], prices[i] - dp[k - 1][i - 1]);
+                dp[k][i] = Math.max(dp[k][i - 1], prices[i] - min[k]);
+            }
+        }
+        return dp[2][n - 1];
+    }
+
+    //time O(kn) space O(k)
+    public int maxProfit4(int[] prices) {
+        int n = prices.length;
+        int[] dp = new int[3];
+        int[] min = new int[3];
+        Arrays.fill(min, prices[0]);
+        for (int i = 1; i < n; i++) {
+            for (int k = 1; k <= 2; k++) {
+                min[k] = Math.min(min[k], prices[i] - dp[k - 1]);
+                dp[k] = Math.max(dp[k], prices[i] - min[k]);
+            }
+        }
+        return dp[2];
     }
 
 
