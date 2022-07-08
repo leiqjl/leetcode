@@ -11,9 +11,38 @@ package com.leiqjl;
  * - Replace a character
  */
 public class EditDistance {
+    //time O(mn) space O(n)
+    public int minDistance(String word1, String word2) {
+        int m = word1.length();
+        int n = word2.length();
+        int[] dp = new int[n + 1];
+
+        for (int j = 1; j <= n; j++) {
+            dp[j] = j;
+        }
+        int topLeft;
+        for (int i = 1; i <= m; i++) {
+            topLeft = dp[0];
+            dp[0] = i;
+            for (int j = 1; j <= n; j++) {
+                int temp = dp[j];
+
+                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+                    dp[j] = topLeft;
+                } else {
+                    //replace dp[i-1][j-1]+1
+                    //delete  dp[i-1][j]+1
+                    //insert  dp[i][j-1]+1
+                    dp[j] = Math.min(topLeft, Math.min(dp[j], dp[j - 1])) + 1;
+                }
+                topLeft = temp;
+            }
+        }
+        return dp[n];
+    }
 
     //time O(mn) space O(mn)
-    public int minDistance(String word1, String word2) {
+    public int minDistance1(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
         int[][] dp = new int[m + 1][n + 1];
@@ -37,7 +66,6 @@ public class EditDistance {
         }
         return dp[m][n];
     }
-    //todo time O(mn) space O(n)
 
     public static void main(String[] args) {
         EditDistance e = new EditDistance();
