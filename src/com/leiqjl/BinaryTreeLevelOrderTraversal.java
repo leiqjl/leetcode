@@ -1,43 +1,41 @@
 package com.leiqjl;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 /**
+ * 102. Binary Tree Level Order Traversal - Medium
+ * <p>
  * Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
  */
 public class BinaryTreeLevelOrderTraversal {
 
-    class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int x) {
-            val = x;
-        }
-    }
-
     public List<List<Integer>> levelOrder(TreeNode root) {
-
         List<List<Integer>> result = new ArrayList<>();
-        Deque<TreeNode> deque = new LinkedList<>();
-        if (root != null) {
-            deque.offer(root);
+        if (root == null) {
+            return result;
         }
-        while (!deque.isEmpty()) {
-            List<Integer> list = new ArrayList<>();
-            int n = deque.size();
-
-            while (n > 0) {
-                TreeNode node = deque.poll();
-                list.add(node.val);
-                if (node.left != null) deque.offer(node.left);
-                if (node.right != null) deque.offer(node.right);
-                n--;
+        Deque<TreeNode> q = new ArrayDeque<>();
+        q.offer(root);
+        while (!q.isEmpty()) {
+            int size = q.size();
+            List<Integer> list = new ArrayList<>(size);
+            while (size > 0) {
+                TreeNode poll = q.poll();
+                list.add(poll.val);
+                if (poll.left != null) {
+                    q.offer(poll.left);
+                }
+                if (poll.right != null) {
+                    q.offer(poll.right);
+                }
+                size--;
             }
             result.add(list);
         }
-
         return result;
     }
+
 }
