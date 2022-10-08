@@ -1,10 +1,9 @@
 package com.leiqjl;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
+ * 16. 3Sum Closest - Medium
  * Given an array nums of n integers and an integer target, find three integers in nums such that the sum is closest to target.
  * Return the sum of the three integers.
  * You may assume that each input would have exactly one solution.
@@ -22,19 +21,27 @@ public class ThreeSumClosest {
         }
 
         Arrays.sort(nums);
-
-        int result = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length - 2; i++) {
+        int n = nums.length;
+        int firstThree = nums[0] + nums[1] + nums[2];
+        int lastThree = nums[n - 1] + nums[n - 2] + nums[n - 3];
+        if (target < firstThree) {
+            return firstThree;
+        }
+        if (target > lastThree) {
+            return lastThree;
+        }
+        int result = firstThree;
+        for (int i = 0; i < n - 2; i++) {
             if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
 
             int l = i + 1;
-            int r = nums.length - 1;
+            int r = n - 1;
             while (l < r) {
 
                 int sum = nums[i] + nums[l] + nums[r];
-                if (Math.abs(sum-target) < Math.abs(result-target)) {
+                if (Math.abs(sum - target) < Math.abs(result - target)) {
                     result = sum;
                 }
 
@@ -52,9 +59,9 @@ public class ThreeSumClosest {
     }
 
     public static void main(String[] args) {
+        ThreeSumClosest t = new ThreeSumClosest();
         int[] nums = {-1, 2, 1, -4};
-        int target = 1;
-        ThreeSumClosest solution = new ThreeSumClosest();
-        System.out.println(solution.threeSumClosest(nums, target));
+        assert t.threeSumClosest(nums, 1) == 2;
+        assert t.threeSumClosest(new int[]{0, 0, 0}, 1) == 0;
     }
 }
