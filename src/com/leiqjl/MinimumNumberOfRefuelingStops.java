@@ -18,7 +18,7 @@ public class MinimumNumberOfRefuelingStops {
             if (maxHeap.isEmpty()) {
                 return -1;
             }
-            startFuel += maxHeap.peek();
+            startFuel += maxHeap.poll();
             count++;
         }
         return count;
@@ -65,5 +65,8 @@ public class MinimumNumberOfRefuelingStops {
         //We made 2 refueling stops along the way, so we return 2.
         int[][] s2 = {{10, 60}, {20, 30}, {30, 30}, {60, 40}};
         assert m.minRefuelStops(100, 10, s2) == 2;
+
+        int[][] s3 = {{25, 30}};
+        assert m.minRefuelStops(100, 50, s3) == -1;
     }
 }
