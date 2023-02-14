@@ -31,6 +31,18 @@ public class MinimizeTheMaximumOfTwoArrays {
         return b == 0 ? a : gcd(b, a % b);
     }
 
+    public int minimizeSet1(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
+        long r1 = getEnd(uniqueCnt1, divisor1);
+        long r2 = getEnd(uniqueCnt2, divisor2);
+
+        long lcm = ((long) divisor1 / gcd(divisor1, divisor2)) * divisor2;
+        long r3 = getEnd(uniqueCnt1 + uniqueCnt2, lcm);
+        return (int) Math.max(r1, Math.max(r2, r3));
+    }
+    private long getEnd(long count, long d) {
+        return count + count / (d - 1) - (count % (d - 1) == 0 ? 1 : 0);
+    }
+
 
     public static void main(String[] args) {
         MinimizeTheMaximumOfTwoArrays m = new MinimizeTheMaximumOfTwoArrays();
