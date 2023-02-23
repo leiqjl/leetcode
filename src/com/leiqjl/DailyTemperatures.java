@@ -1,8 +1,6 @@
 package com.leiqjl;
 
-import java.util.ArrayDeque;
 import java.util.Arrays;
-import java.util.Deque;
 
 /**
  * 739. Daily Temperatures - Medium
