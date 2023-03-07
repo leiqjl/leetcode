@@ -15,7 +15,7 @@ public class KthMissingPositiveNumber {
     //arr[i] < arr[j] for 1 <= i < j <= arr.length
     public int findKthPositive(int[] arr, int k) {
         int i = 0, count = 0;
-        for (int num = 1; num <= 1000; num++) {
+        for (int num = 1; num <= (k + arr.length); num++) {
             if (i < arr.length && arr[i] == num) {
                 i++;
             } else {
