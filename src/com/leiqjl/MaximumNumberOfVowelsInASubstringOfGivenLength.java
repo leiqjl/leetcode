@@ -14,7 +14,6 @@ public class MaximumNumberOfVowelsInASubstringOfGivenLength {
         int max = count;
         int r = k, l = 0;
         while (r < s.length()) {
-            System.out.println(s.charAt(r));
             if ("aeiou".indexOf(s.charAt(r)) >= 0) {
                 count++;
             }
