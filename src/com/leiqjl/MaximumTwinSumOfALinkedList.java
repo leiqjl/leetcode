@@ -1,5 +1,8 @@
 package com.leiqjl;
 
+import java.util.Deque;
+import java.util.LinkedList;
+
 /**
  * 2130. Maximum Twin Sum of a Linked List
  *
@@ -38,6 +41,24 @@ public class MaximumTwinSumOfALinkedList {
             cur = next;
         }
         return pre;
+    }
+
+    //stack
+    //time O(N) space O(N)
+    public int pairSum1(ListNode head) {
+        Deque<ListNode> deque = new LinkedList<>();
+        ListNode fast = head, slow = head;
+        while (fast != null && fast.next != null) {
+            deque.push(slow);
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        int sum = 0;
+        while (slow != null) {
+            sum = Math.max(sum, slow.val + deque.pop().val);
+            slow = slow.next;
+        }
+        return sum;
     }
 
 }
