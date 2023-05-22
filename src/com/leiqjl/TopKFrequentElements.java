@@ -1,9 +1,6 @@
 package com.leiqjl;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 347. Top K Frequent Elements - Medium
@@ -16,24 +13,33 @@ public class TopKFrequentElements {
     public int[] topKFrequent(int[] nums, int k) {
         int[] result = new int[k];
         Map<Integer, Integer> map = new HashMap<>();
-        for (int i : nums) {
-            map.put(i, map.getOrDefault(i, 0) + 1);
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
-        List<Integer>[] bucket = new List[nums.length + 1];
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if (bucket[entry.getValue()] == null) {
-                bucket[entry.getValue()] = new LinkedList<>();
+        List<Integer>[] buckets = new List[nums.length + 1];
+        map.forEach((key, value) -> {
+            if (buckets[value] == null) {
+                buckets[value] = new ArrayList<>();
             }
-            bucket[entry.getValue()].add(entry.getKey());
-        }
+            buckets[value].add(key);
+        });
         int pos = 0;
-        for (int i = bucket.length - 1; i >= 0; i--) {
-            if (bucket[i] != null) {
-                for (int j : bucket[i]) {
+        for (int i = buckets.length - 1; i >= 0; i--) {
+            if (buckets[i] != null) {
+                for (int j : buckets[i]) {
                     result[pos++] = j;
+                    if (pos == k) {
+                        return result;
+                    }
                 }
             }
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        TopKFrequentElements t = new TopKFrequentElements();
+        assert "[1, 2]".equals(Arrays.toString(t.topKFrequent(new int[]{1, 1, 1, 2, 2, 3}, 2)));
+        assert "[1]".equals(Arrays.toString(t.topKFrequent(new int[]{1}, 1)));
     }
 }
