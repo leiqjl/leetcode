@@ -10,7 +10,7 @@ package com.leiqjl;
 public class IsSubsequence {
     public boolean isSubsequence(String s, String t) {
         int m = s.length(), n = t.length();
-        if (m == 0 || m > n) {
+        if (m > n) {
             return false;
         }
         int i = 0, j = 0;
