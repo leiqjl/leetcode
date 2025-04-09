@@ -19,22 +19,25 @@ public class New21Game {
     //
     //0 <= k <= n <= 10^4
     //1 <= maxPts <= 10^4
+    // p(k) = p(k-1)/maxPts + p(k-2)/maxPts + ... + p(k-maxPts)/maxPts
+    //pSum = p(k-1) + p(k-2) + ... + p(k-maxPts)
+    //p(k) = pSum / maxPts
     public double new21Game(int n, int k, int maxPts) {
         if (k == 0 || n >= k + maxPts) {
             return 1;
         }
         double[] dp = new double[n + 1];
-        double res = 0, sum = 1;
+        double res = 0, pSum = 1;
         dp[0] = 1;
         for (int i = 1; i <= n; i++) {
-            dp[i] = sum / maxPts;
+            dp[i] = pSum / maxPts;
             if (i < k) {
-                sum += dp[i];
+                pSum += dp[i];
             } else {
                 res += dp[i];
             }
             if (i >= maxPts) {
-                sum -= dp[i - maxPts];
+                pSum -= dp[i - maxPts];
             }
         }
         return res;
