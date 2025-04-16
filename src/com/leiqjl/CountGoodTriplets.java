@@ -29,6 +29,46 @@ public class CountGoodTriplets {
     //  [arr[j]-a,arr[j]+a]
     //  [arr[k]-c,arr[k]+c]
     public int countGoodTriplets(int[] arr, int a, int b, int c) {
+        int n = arr.length;
+        int[] freq = new int[1001];
+        int[] suffixSum = new int[1001];
+        freq[arr[0]] = 1;
+        for (int i = n - 1; i > 1; i--) {
+            suffixSum[arr[i]]++;
+        }
+        for (int i = 1; i <= 1000; i++) {
+            suffixSum[i] = suffixSum[i - 1] + suffixSum[i];
+        }
+        int count = 0;
+        for (int j = 1; j < n - 1; j++) {
+            int mid = arr[j];
+            int li = Math.max(0, mid - a);
+            int ri = Math.min(1000, mid + a);
+            int lk = Math.max(0, mid - b);
+            int rk = Math.min(1000, mid + b);
+            for (int iVal = li; iVal <= ri; iVal++) {
+                if (freq[iVal] == 0) {
+                    continue;
+                }
+                int kMin = Math.max(lk, iVal - c);
+                int kMax = Math.min(rk, iVal + c);
+                if (kMin <= kMax) {
+                    if (kMin == 0) {
+                        count += freq[iVal] * suffixSum[kMax];
+                    } else {
+                        count += freq[iVal] * (suffixSum[kMax] - suffixSum[kMin - 1]);
+                    }
+                }
+            }
+            freq[mid]++;
+            for (int v = arr[j + 1]; v <= 1000; v++) {
+                suffixSum[v]--;
+            }
+        }
+        return count;
+    }
+
+    public int countGoodTriplets2(int[] arr, int a, int b, int c) {
         int count = 0;
         int[] preSum = new int[1002];
         for (int j = 0; j < arr.length; j++) {
