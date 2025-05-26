@@ -9,10 +9,13 @@ public class LargestColorValueInADirectedGraph {
     public int largestPathValue(String colors, int[][] edges) {
         int n = colors.length();
         int[] indegree = new int[n];
-        Map<Integer, List<Integer>> graph = new HashMap<>();
-        for (int[] edge : edges) {
-            graph.computeIfAbsent(edge[0], v -> new ArrayList<>()).add(edge[1]);
-            indegree[edge[1]]++;
+        List<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        for (int[] e : edges) {
+            graph[e[0]].add(e[1]);
+            indegree[e[1]]++;
         }
         Deque<Integer> deque = new ArrayDeque<>();
         for (int i = 0; i < n; i++) {
@@ -20,26 +23,29 @@ public class LargestColorValueInADirectedGraph {
                 deque.offer(i);
             }
         }
-        int[][] count = new int[n][26];
-        int num = 0, result = -1;
+        int ans = 0;
+        int visitedCount = 0;
+        int[][] countColors = new int[n][26];
         while (!deque.isEmpty()) {
-            int poll = deque.poll();
-            count[poll][colors.charAt(poll) - 'a']++;
-            result = Math.max(result, count[poll][colors.charAt(poll) - 'a']);
-            num++;
-            if (!graph.containsKey(poll)) {
-                continue;
-            }
-            for (int neighbor : graph.get(poll)) {
-                for (int i = 0; i < 26; i++) {
-                    count[neighbor][i] = Math.max(count[neighbor][i], count[poll][i]);
+            int cur = deque.poll();
+            int color = colors.charAt(cur) - 'a';
+            countColors[cur][color]++;
+            ans = Math.max(ans, countColors[cur][color]);
+            visitedCount++;
+
+            for (int next : graph[cur]) {
+                for (int c = 0; c < 26; c++) {
+                    if (countColors[next][c] < countColors[cur][c]) {
+                        countColors[next][c] = countColors[cur][c];
+                    }
                 }
-                indegree[neighbor]--;
-                if (indegree[neighbor] == 0) {
-                    deque.offer(neighbor);
+                indegree[next]--;
+                if (indegree[next] == 0) {
+                    deque.offer(next);
                 }
             }
+
         }
-        return num == n ? result : -1;
+        return visitedCount == n ? ans : -1;
     }
 }
