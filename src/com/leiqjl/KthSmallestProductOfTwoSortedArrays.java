@@ -15,7 +15,75 @@ public class KthSmallestProductOfTwoSortedArrays {
     //nums1 + nums2 -
     //nums1 - nums2 -
     //nums1 + nums2 +
+
+    // (0,pos1) <0  [pos1,n1) >=0
+    // (0,pos2) <0  [pos2,n2) >=0
     public long kthSmallestProduct(int[] nums1, int[] nums2, long k) {
+        int n1 = nums1.length, n2 = nums2.length;
+        int pos1 = 0, pos2 = 0;
+        while (pos1 < n1 && nums1[pos1] < 0) {
+            pos1++;
+        }
+        while (pos2 < n2 && nums2[pos2] < 0) {
+            pos2++;
+        }
+        long left = -10_000_000_000L, right = 10_000_000_000L;
+        while (left <= right) {
+            long mid = left + (right - left) / 2;
+            long count = 0;
+            //(0,pos1) (0,pos2)
+            int idx1 = 0, idx2 = pos2 - 1;
+            while (idx1 < pos1 && idx2 >= 0) {
+                if ((long) nums1[idx1] * nums2[idx2] > mid) {
+                    idx1++;
+                } else {
+                    count += (pos1 - idx1);
+                    idx2--;
+                }
+            }
+            //[pos1,n1) [pos2,n2)
+            idx1 = pos1;
+            idx2 = n2 - 1;
+            while (idx1 < n1 && idx2 >= pos2) {
+                if ((long) nums1[idx1] * nums2[idx2] > mid) {
+                    idx2--;
+                } else {
+                    count += (idx2 - pos2 + 1);
+                    idx1++;
+                }
+            }
+            //(0,pos1) [pos2,n2)
+            idx1 = 0;
+            idx2 = pos2;
+            while (idx1 < pos1 && idx2 < n2) {
+                if ((long) nums1[idx1] * nums2[idx2] > mid) {
+                    idx2++;
+                } else {
+                    count += (n2 - idx2);
+                    idx1++;
+                }
+            }
+            //[pos1,n1) (0,pos2)
+            idx1 = pos1;
+            idx2 = 0;
+            while (idx1 < n1 && idx2 < pos2) {
+                if ((long) nums1[idx1] * nums2[idx2] > mid) {
+                    idx1++;
+                } else {
+                    count += (n1 - idx1);
+                    idx2++;
+                }
+            }
+            if (count < k) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
+    public long kthSmallestProduct1(int[] nums1, int[] nums2, long k) {
         long left = -10_000_000_000L, right = 10_000_000_000L;
         while (left <= right) {
             long mid = left + (right - left) / 2;
