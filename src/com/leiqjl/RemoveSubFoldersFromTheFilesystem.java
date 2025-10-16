@@ -11,14 +11,16 @@ public class RemoveSubFoldersFromTheFilesystem {
     public List<String> removeSubfolders(String[] folder) {
         List<String> list = new ArrayList<>();
         Arrays.sort(folder);
-        list.add(folder[0]);
-        for (int i = 1; i < folder.length; i++) {
-            String last = list.get(list.size() - 1) + '/';
-            if (folder[i].startsWith(last)) {
+        String prev = "";
+
+        for (String f : folder) {
+            if (!prev.isEmpty() && f.startsWith(prev) && f.charAt(prev.length()) == '/') {
                 continue;
             }
-            list.add(folder[i]);
+            list.add(f);
+            prev = f;
         }
         return list;
     }
+
 }
