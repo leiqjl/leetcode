@@ -13,15 +13,15 @@ public class ClimbingStairs {
         if (n < 3) {
             return n;
         }
-        int i = 1;
-        int j = 2;
-        int total = 0;
+        int twoStepsBefore = 1;
+        int oneStepsBefore = 2;
+        int cur = 0;
         while (n >= 3) {
-            total = i + j;
-            i = j;
-            j = total;
+            cur = twoStepsBefore + oneStepsBefore;
+            twoStepsBefore = oneStepsBefore;
+            oneStepsBefore = cur;
             n--;
         }
-        return total;
+        return cur;
     }
 }
