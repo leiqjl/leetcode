@@ -23,7 +23,7 @@ public class KthSmallestInLexicographicalOrder {
     private int countSteps(int n, long prefix1, long prefix2) {
         int steps = 0;
         while (prefix1 <= n) {
-            steps += Math.min(n + 1, prefix2) - prefix1;
+            steps += (int) (Math.min(n + 1, prefix2) - prefix1);
             prefix1 *= 10;
             prefix2 *= 10;
         }
