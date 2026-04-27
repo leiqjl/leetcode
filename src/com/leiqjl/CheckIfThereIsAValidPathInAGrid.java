@@ -31,25 +31,22 @@ public class CheckIfThereIsAValidPathInAGrid {
         if (m == 1 && n == 1) {
             return true;
         }
-        boolean[][] visited = new boolean[m][n];
-        visited[0][0] = true;
         int cur = grid[0][0] - 1;
         for (int dir : connections[cur]) {
             if (dir == -1) {
                 continue;
             }
-            if (dfs(grid, dirs[dir][0], dirs[dir][1], m, n, visited, dir)) {
+            if (dfs(grid, dirs[dir][0], dirs[dir][1], m, n, dir)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean dfs(int[][] grid, int i, int j, int m, int n, boolean[][] visited, int prevDir) {
-        if (i < 0 || i >= m || j < 0 || j >= n || visited[i][j]) {
+    private boolean dfs(int[][] grid, int i, int j, int m, int n, int prevDir) {
+        if (i < 0 || i >= m || j < 0 || j >= n || (i == 0 && j == 0)) {
             return false;
         }
-        visited[i][j] = true;
         int cur = grid[i][j] - 1;
         if (connections[cur][prevDir] == -1) {
             return false;
@@ -58,9 +55,7 @@ public class CheckIfThereIsAValidPathInAGrid {
             return true;
         }
         int dir = connections[cur][prevDir];
-        boolean res = dfs(grid, i + dirs[dir][0], j + dirs[dir][1], m, n, visited, dir);
-        visited[i][j] = false;
-        return res;
+        return dfs(grid, i + dirs[dir][0], j + dirs[dir][1], m, n, dir);
     }
 
     public static void main(String[] args) {
