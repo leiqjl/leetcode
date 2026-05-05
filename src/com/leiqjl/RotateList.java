@@ -14,29 +14,24 @@ public class RotateList {
             return head;
         }
         int count = 1;
-        ListNode fast = head;
-        while (k > 0) {
-            k--;
-            if (fast.next != null) {
-                fast = fast.next;
-                count++;
-            } else {
-                fast = head;
-                k = k % count;
-            }
+        ListNode tail = head;
+        while (tail.next != null) {
+            tail = tail.next;
+            count++;
         }
-        if (fast == head) {
+        k = k % count;
+        if (k == 0) {
             return head;
         }
-        ListNode slow = head;
-        while (fast.next != null) {
-            fast = fast.next;
-            slow = slow.next;
+        ListNode newTail = head;
+        for (int i = 0; i < count - k - 1; i++) {
+            newTail = newTail.next;
         }
-        fast.next = head;
-        head = slow.next;
-        slow.next = null;
-        return head;
+        ListNode newHead = newTail.next;
+        newTail.next = null;
+        tail.next = head;
+
+        return newHead;
     }
 
 }
