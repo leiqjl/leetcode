@@ -7,6 +7,9 @@ package com.leiqjl;
 public class PredictTheWinner {
     public boolean predictTheWinner(int[] nums) {
         int n = nums.length;
+        if ((n & 1) == 0) {
+            return true;
+        }
         int[] dp = new int[n];
         for (int i = n - 1; i >= 0; i--) {
             dp[i] = nums[i];
